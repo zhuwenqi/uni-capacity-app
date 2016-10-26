@@ -1,0 +1,57 @@
+{% extends "template.html" %}
+{% block title %}Versions{% endblock %}
+{% block content %}
+<h3 class="page-header">Tool Required</h3>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        Filter Parameters
+        <button type="button" class="btn btn-hide" data-toggle="collapse" data-target="#panel-body"
+                        aria-expanded="true" aria-controls="panel-body">
+            <span class="horizontal-bar"></span>
+        </button>
+    </div>
+    <div class="row panel-body collapse in" id="panel-body">
+        <form action="{{ url_for('get_itemgroup_priority') }}" method="post">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="ver-sel">Version</label>
+                    <select class="form-control" name="v" id="ver-sel">
+                        {% for row in versions %}
+                        <option value="{{ row['id'] }}"
+                                {{ 'selected=selected' if session['version_id']|int() == row['id']|int() }}>
+                            {{ row['id'] }}  |  {{ row['name'] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 col-md-offset-8">
+                <input type="submit" class="btn btn-info" value="Load">
+            </div>
+        </form>
+    </div>
+</div>
+{# Data Panel #}
+<h4></h4>
+<div class="grid-container"></div>
+</div>
+{% endblock %}
+{% block addition_script %}
+<script>
+    $(function () {
+        var data = {{ cell_data|safe }}
+        $('.grid-container').handsontable({
+            data: data,
+            colHeaders: {{ col_headers|safe }},
+            manualColumnResize: true,
+            autoRowSize: true,
+            autoColumnSize: true,
+            minSpareRows: true,
+            tableClassName: ['table', 'table-hover', 'table-striped'],
+            columnSorting: true,
+            readOnly: true,
+            sortIndicator: true
+        })
+    })
+</script>
+{% endblock %}

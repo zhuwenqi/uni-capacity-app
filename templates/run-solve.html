@@ -1,0 +1,56 @@
+{% extends "template.html" %}
+{% block title %}Versions{% endblock %}
+{% block content %}
+<h3 class="page-header">Run Solve</h3>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        Filter Parameters
+        <button type="button" class="btn btn-hide" data-toggle="collapse" data-target="#panel-body"
+                        aria-expanded="true" aria-controls="panel-body">
+            <span class="horizontal-bar"></span>
+        </button>
+    </div>
+    <div class="row panel-body collapse in" id="panel-body">
+        <form action="{{ url_for('get_itemgroup_priority') }}" method="post">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="ver-sel">Version</label>
+                    <select class="form-control" name="v" id="ver-sel">
+                        {% for row in versions %}
+                        <option value="{{ row['id'] }}"
+                                {{ 'selected=selected' if session['version_id']|int() == row['id']|int() }}>
+                            {{ row['id'] }}  |  {{ row['name'] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 col-md-offset-1">
+                <input type="submit" class="btn btn-info btn-slv" value="Run Solve">
+            </div>
+            <div class="col-md-1 col-md-offset-1">
+                <input type="button" class="btn btn-default btn-slv" value="Validation Only">
+            </div>
+        </form>
+    </div>
+</div>
+{# Log Info Panel #}
+<h4>Run solve logs</h4>
+<blockquote>
+    <p>2016-07-04 06:22:25,317 - root - INFO: ** Starting new optimization solver ...</p>
+    <p>2016-07-04 06:22:25,318 - __main__ - INFO: Run solve on version: 2.</p>
+    <p>2016-07-04 06:22:25,365 - __main__ - INFO: Building scenario ...</p>
+    <p>2016-07-04 06:22:25,366 - unicore.dal.services - INFO: Loading data into scenario ...</p>
+    <p>2016-07-04 06:22:25,420 - __main__ - INFO: Generate model and run solve ...</p>
+    <p>2016-07-04 06:22:25,667 - unicore.solver.abstract - INFO: #variables: 1877</p>
+    <p>2016-07-04 06:22:25,667 - unicore.solver.abstract - INFO: #constraints: 1583</p>
+    <p>2016-07-04 06:22:25,746 - unicore.solver.abstract - INFO: LP file written at C:\Projects\Python</p>
+    <p>2016-07-04 06:22:25,747 - unicore.solver.abstract - INFO: Start to solve ...</p>
+    <p>2016-07-04 06:22:25,876 - unicore.solver.abstract - INFO: Solver done with status Optimal.</p>
+    <p>2016-07-04 06:22:25,895 - unicore.solver.abstract - INFO: Solution file written at C:\Projects\Python</p>
+    <p>2016-07-04 06:22:25,898 - unicore.solver.abstract - INFO: Run all sub-solvers has completed.</p>
+    <p>2016-07-04 06:22:25,900 - unicore.dal.services - INFO: Saving data to database ...</p>
+    <p>2016-07-04 06:22:26,077 - root - INFO: ** Solver finished.</p>
+</blockquote>
+</div>
+{% endblock %}

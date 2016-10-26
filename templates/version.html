@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+{% block title %}Versions{% endblock %}
+{% block content %}
+<h3 class="page-header">Version</h3>
+<div class="grid-container"></div>
+</div>
+{% endblock %}
+{% block addition_script %}
+<script>
+    $(function () {
+        var data = {{ cell_data|safe }}
+        $('.grid-container').handsontable({
+            data: data,
+            colHeaders: {{ col_headers|safe }},
+            manualColumnResize: true,
+            autoRowSize: true,
+            autoColumnSize: true,
+            minSpareRows: true,
+            tableClassName: ['table', 'table-hover', 'table-striped'],
+            columnSorting: true,
+            sortIndicator: true,
+            columns: [
+                {
+                    readOnly: true,
+                },
+                { },
+                { },
+                {
+                    readOnly: true,
+                },
+                {
+                    readOnly: true,
+                },
+                {
+                    readOnly: true,
+                }
+            ]
+        })
+    })
+</script>
+{% endblock %}

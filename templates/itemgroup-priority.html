@@ -1,0 +1,89 @@
+{% extends "template.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h3 class="page-header">ItemGroup Priority</h3>
+{# Filter Parameters Panel #}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        Filter Parameters
+        <button type="button" class="btn btn-hide" data-toggle="collapse" data-target="#panel-body"
+                        aria-expanded="true" aria-controls="panel-body">
+            <span class="horizontal-bar"></span>
+        </button>
+    </div>
+    <div class="row panel-body collapse in" id="panel-body">
+        <form action="{{ url_for('get_itemgroup_priority') }}" method="post">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="ver-sel">Version</label>
+                    <select class="form-control" name="v" id="ver-sel">
+                        {% for row in versions %}
+                        <option value="{{ row['id'] }}"
+                                {{ 'selected=selected' if session['version_id']|int() == row['id']|int() }}>
+                            {{ row['id'] }}  |  {{ row['name'] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <fieldset>
+                    <legend>Location</legend>
+                    <div class="form-group">
+                        <!--<label for="loc_list">Location</label>-->
+                        <div class="checkbox loc-list">
+                            <label><input type="checkbox" class="select-all">ALL</label>
+                            {% for id, name in locs.items() %}
+                            <label><input type="checkbox" name="l" value="{{id}}">{{name}}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>ItemGroup</legend>
+                    <div class="form-group">
+                        <div class="checkbox ig-list">
+                            <label><input type="checkbox" class="select-all">ALL</label>
+                            {% for id, name in itemgroups.items() %}
+                            <label><input type="checkbox" name="ig" value="{{id}}">{{name}}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-1 col-md-offset-2">
+                <input type="submit" class="btn btn-info" value="Load">
+            </div>
+        </form>
+    </div>
+</div>
+{# Data Panel #}
+<h4 class="sub-header">Section title</h4>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ItemGroup</th>
+            <th>Location</th>
+            {% for bucket in buckets %}
+            <th>{{ bucket[0] }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {%for ig, loc_dict in priorities.items() %}
+            {% for loc, v_dict in loc_dict.items() %}
+            <tr>
+                {# <td rowspan="{{ len(loc.dict) }}">{{ ig }}</td> #}
+                <td>{{ ig }}</td>
+                <td>{{ loc }}</td>
+                {% for val in v_dict.values() %}
+                <td>{{ val }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
